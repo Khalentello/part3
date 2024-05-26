@@ -63,6 +63,10 @@ app.post("/api/persons/", (request, response) => {
     return response.status(400).json({
       error: "content missing",
     });
+  } else if (persons.find((p) => p.name === body.name)) {
+    return response.status(409).json({
+      error: "Name already in phone book",
+    });
   }
   const person = {
     id: generatedId(),
