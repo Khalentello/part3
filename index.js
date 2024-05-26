@@ -27,9 +27,17 @@ persons = [
 app.get("/", (request, response) => {
   response.send("<h1>Hello World!</h1>");
 });
+
 app.get("/api/persons", (request, response) => {
   response.json(persons);
 });
+
+app.get("/api/persons/:id", (request, response) => {
+  const id = Number(request.params.id);
+  const person = persons.find((p) => p.id === id);
+  person ? response.json(person) : response.status(404).end();
+});
+
 app.get("/info", (request, response) => {
   const date = new Date(Date.now());
   response.send(
