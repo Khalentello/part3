@@ -2,6 +2,17 @@ const express = require("express");
 app = express();
 app.use(express.json());
 
+const morgan = require("morgan");
+morgan.token("data", function (request, response) {
+  data = JSON.stringify({ ...request.body });
+  return data;
+});
+app.use(
+  morgan(
+    "method: :method url: :url status: :status ms: :response-time ms data sent: :data"
+  )
+);
+
 persons = [
   {
     id: 1,
@@ -36,6 +47,7 @@ app.get("/api/persons", (request, response) => {
 app.get("/api/persons/:id", (request, response) => {
   const id = Number(request.params.id);
   const person = persons.find((p) => p.id === id);
+
   person ? response.json(person) : response.status(404).end();
 });
 
