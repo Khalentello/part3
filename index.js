@@ -2,9 +2,13 @@ const express = require("express");
 app = express();
 app.use(express.json());
 
+const cors = require("cors");
+app.use(cors());
+app.use(express.static("dist"));
+
 const morgan = require("morgan");
 morgan.token("data", function (request, response) {
-  data = JSON.stringify({ ...request.body });
+  data = JSON.stringify(request.body);
   return data;
 });
 app.use(
